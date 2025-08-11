@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Колесо Фортуны Magic Galaxy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        
+        
+        h1 {
+            color: #1a73e8;
+            font-size: 2.25rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 450px; /* Увеличил с 350px до 450px */
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            border: 8px solid #a7d8ff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .wheel svg {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .segment-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px; /* Увеличил размер шрифта для большого колеса */
+            font-weight: 600;
+            fill: black;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .pin {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #e74c3c;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        }
+
+        .spin-button {
+            background: linear-gradient(180deg, #1a73e8, #0a58b2);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease-in-out;
+            outline: none;
+        }
+
+        .spin-button:hover {
+            background: linear-gradient(180deg, #0a58b2, #1a73e8);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .spin-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .result {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #28a745;
+            text-align: center;
+            min-height: 2rem;
+        }
+        .logo2 {
+            display: block;
+       
+            position: relative;
+            margin: 0 auto 20px auto;
+            width: 250px;
+            height: auto;
+            z-index: 10;
+        }
+        .logo-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .logo-center img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            display: block;
+            background-color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                width: 95%;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+            .spin-button {
+                padding: 12px 25px;
+                font-size: 1.1rem;
+            }
+            .result {
+                font-size: 1.3rem;
+            }
+            .segment-text {
+                font-size: 8px;
+            }
+            .logo-center {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        @media (max-width: 480px) {
+            .wheel-container {
+                width: 270px;
+                height: 270px;
+            }
+            .segment-text {
+                font-size: 9px;
+            }
+            .logo-center {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="logo2" src="/img/logo3.png" alt="">
+        <div class="wheel-container">
+            <div class="pin"></div>
+            <div class="wheel" id="wheel">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Segments will be added by JavaScript -->
+                </svg>
+            </div>
+            <div class="logo-center">
+                <img src="/img/logo4.png" class="logo1" alt="Magic Galaxy Logo" >
+            </div>
+        </div>
+        <button class="spin-button" id="spinButton">Крутить!</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wheel = document.getElementById('wheel');
+            const spinButton = document.getElementById('spinButton');
+            const resultDisplay = document.getElementById('result');
+            const svg = wheel.querySelector('svg');
+
+            // Список призов
+            const prizes = [
+                "Стрижка в салоне",
+                "Напиток из бара",
+                "Посещение бассейна",
+                "Блюдо из Magic Cafe",
+                "Мойка машины",
+                "Занятие для ребенка"
+            ];
+
+            const numSegments = prizes.length;
+            const segmentAngle = 360 / numSegments;
+            const colors = ['#4a90e2', '#2b6cb0']; // Светлый и темный синий
+
+            // Функция для создания пути сегмента (сектора)
+            function createSegmentPath(centerX, centerY, radius, startAngle, endAngle) {
+                const startAngleRad = (startAngle - 90) * Math.PI / 180;
+                const endAngleRad = (endAngle - 90) * Math.PI / 180;
+
+                const x1 = centerX + radius * Math.cos(startAngleRad);
+                const y1 = centerY + radius * Math.sin(startAngleRad);
+                const x2 = centerX + radius * Math.cos(endAngleRad);
+                const y2 = centerY + radius * Math.sin(endAngleRad);
+
+                const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+                return `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
+            }
+
+            // Функция для создания сегментов колеса
+            function createSegments() {
+                svg.innerHTML = '';
+                
+                const centerX = 100;
+                const centerY = 100;
+                const radius = 90;
+
+                prizes.forEach((prize, index) => {
+                    const startAngle = index * segmentAngle;
+                    const endAngle = (index + 1) * segmentAngle;
+
+                    // Создаем сегмент
+                    const segment = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    segment.setAttribute('d', createSegmentPath(centerX, centerY, radius, startAngle, endAngle));
+                    segment.setAttribute('fill', colors[index % colors.length]);
+                    segment.setAttribute('stroke', '#fff');
+                    segment.setAttribute('stroke-width', '1');
+
+                    // Создаем текст
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    const textAngle = startAngle + segmentAngle / 2;
+                    const textRadius = radius * 0.65; // Уменьшил радиус для более компактного размещения
+                    const textAngleRad = (textAngle - 90) * Math.PI / 180;
+                    const textX = centerX + textRadius * Math.cos(textAngleRad);
+                    const textY = centerY + textRadius * Math.sin(textAngleRad);
+
+                    text.setAttribute('x', textX);
+                    text.setAttribute('y', textY);
+                    text.setAttribute('class', 'segment-text');
+                    text.setAttribute('transform', `rotate(${textAngle}, ${textX}, ${textY})`);
+                     text.setAttribute('transform', `rotate(${textAngle + 90}, ${textX}, ${textY})`);
+                    // Более умное разбиение текста
+                    const words = prize.split(' ');
+                    if (words.length > 2) {
+                        // Разбиваем на 2 строки для длинных фраз
+                        const midPoint = Math.ceil(words.length / 2);
+                        const firstLine = words.slice(0, midPoint).join(' ');
+                        const secondLine = words.slice(midPoint).join(' ');
+                        
+                        const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                        tspan1.setAttribute('x', textX);
+                        tspan1.setAttribute('dy', '-0.4em');
+                        tspan1.textContent = firstLine;
+                        
+                        const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                        tspan2.setAttribute('x', textX);
+                        tspan2.setAttribute('dy', '1.1em');
+                        tspan2.textContent = secondLine;
+                        
+                        text.appendChild(tspan1);
+                        text.appendChild(tspan2);
+                    } else if (words.length === 2 && prize.length > 15) {
+                        // Для двух длинных слов также разбиваем
+                        const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                        tspan1.setAttribute('x', textX);
+                        tspan1.setAttribute('dy', '-0.4em');
+                        tspan1.textContent = words[0];
+                        
+                        const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                        tspan2.setAttribute('x', textX);
+                        tspan2.setAttribute('dy', '1.1em');
+                        tspan2.textContent = words[1];
+                        
+                        text.appendChild(tspan1);
+                        text.appendChild(tspan2);
+                    } else {
+                        text.textContent = prize;
+                    }
+
+                    svg.appendChild(segment);
+                    svg.appendChild(text);
+                });
+            }
+
+            createSegments();
+
+            let isSpinning = false;
+
+            spinButton.addEventListener('click', () => {
+                if (isSpinning) return;
+
+                isSpinning = true;
+                resultDisplay.textContent = '';
+
+                // Случайное количество оборотов
+                const minRevolutions = 5;
+                const maxRevolutions = 10;
+                const fullRevolutions = Math.floor(Math.random() * (maxRevolutions - minRevolutions + 1)) + minRevolutions;
+
+                // Случайный выигрышный сегмент
+                const winningSegmentIndex = Math.floor(Math.random() * numSegments);
+                
+                // Вычисляем точный угол для остановки
+                // Указатель находится сверху (в позиции 12 часов)
+                // Сегменты начинаются с 0° и идут по часовой стрелке
+                const segmentStartAngle = winningSegmentIndex * segmentAngle;
+                const segmentCenterAngle = segmentStartAngle + segmentAngle / 2;
+                
+                // Нам нужно повернуть колесо так, чтобы центр выигрышного сегмента 
+                // оказался точно под указателем (в верхней позиции)
+                const rotationNeeded = 360 - segmentCenterAngle;
+                const totalRotation = fullRevolutions * 360 + rotationNeeded;
+
+                wheel.style.transition = 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+                // Ждем завершения анимации
+                wheel.addEventListener('transitionend', function handleTransitionEnd() {
+                    wheel.removeEventListener('transitionend', handleTransitionEnd);
+                    
+                    // Проверяем финальную позицию для отладки
+                    const finalRotation = totalRotation % 360;
+                    const normalizedRotation = (360 - finalRotation) % 360;
+                    const actualWinningIndex = Math.floor(normalizedRotation / segmentAngle) % numSegments;
+                    
+                    isSpinning = false;
+                    resultDisplay.textContent = `Поздравляем! Вы выиграли: ${prizes[winningSegmentIndex]}!`;
+                });
+
+                // Резервный таймер на случай проблем с событием transitionend
+                setTimeout(() => {
+                    if (isSpinning) {
+                        isSpinning = false;
+                        resultDisplay.textContent = `Поздравляем! Вы выиграли: ${prizes[winningSegmentIndex]}!`;
+                    }
+                }, 4500);
+            });
+
+            // Обновляем сегменты при изменении размера окна
+            window.addEventListener('resize', createSegments);
+        });
+    </script>
+</body>
+</html>
